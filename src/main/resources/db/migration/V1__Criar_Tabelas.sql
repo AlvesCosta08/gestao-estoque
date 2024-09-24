@@ -20,10 +20,12 @@ CREATE TABLE Tb_Produto (
     id_categoria INT,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_categoria) REFERENCES Tb_Categoria(id_categoria),
-    INDEX idx_referencia (referencia),
-    INDEX idx_descricao (descricao)
+    FOREIGN KEY (id_categoria) REFERENCES Tb_Categoria(id_categoria)
 );
+
+-- Criar índices
+CREATE INDEX idx_referencia ON Tb_Produto (referencia);
+CREATE INDEX idx_descricao ON Tb_Produto (descricao);
 
 -- Criar a tabela Tb_Cliente
 CREATE TABLE Tb_Cliente (
