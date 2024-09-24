@@ -11,6 +11,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:19.03.12
+        options: >-
+          --privileged
+          --volume=/var/run/docker.sock:/var/run/docker.sock
 
     steps:
       - name: Checkout the code
@@ -36,10 +42,6 @@ jobs:
       - name: Build with Maven
         run: ./mvnw clean install
 
-      # Comentado para evitar falhas por ausência de testes
-      # - name: Run Tests
-      #   run: ./mvnw test
-
       - name: Build Docker Image
         run: docker build -t alves74/gestao-estoque:${{ github.sha }} .
 
@@ -48,5 +50,6 @@ jobs:
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+
 
 
