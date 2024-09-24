@@ -2,6 +2,7 @@ package com.gestao_estoque.gestao_estoque.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -27,7 +28,7 @@ public class Produto {
     private UnidadeMedida unidMedida;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private Double precoUnitario;
+    private BigDecimal precoUnitario;
 
     @Column(nullable = false)
     private Integer quantidade;
@@ -51,7 +52,7 @@ public class Produto {
     public Produto() {
     }
 
-    public Produto(Long id_produto, String referencia, String descricao, UnidadeMedida unidMedida, Double precoUnitario, Integer quantidade, String fotoProduto, String qrCode, Categoria categoria, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
+    public Produto(Long id_produto, String referencia, String descricao, UnidadeMedida unidMedida, BigDecimal precoUnitario, Integer quantidade, String fotoProduto, String qrCode, Categoria categoria, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
         this.id_produto = id_produto;
         this.referencia = referencia;
         this.descricao = descricao;
@@ -97,11 +98,11 @@ public class Produto {
         this.unidMedida = unidMedida;
     }
 
-    public Double getPrecoUnitario() {
+    public BigDecimal getPrecoUnitario() {
         return precoUnitario;
     }
 
-    public void setPrecoUnitario(Double precoUnitario) {
+    public void setPrecoUnitario(BigDecimal precoUnitario) {
         this.precoUnitario = precoUnitario;
     }
 

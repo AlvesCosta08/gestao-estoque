@@ -2,6 +2,7 @@ package com.gestao_estoque.gestao_estoque.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -31,17 +32,17 @@ public class Pedido {
     private UnidadeMedida unidMedida;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private Double valorUnitario;
+    private BigDecimal valorUnitario;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private Double subTotal;
+    private BigDecimal subTotal;
 
     @Column(name = "forma_pagamento", nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
     private FormaPagamento formaPagamento;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private Double total;
+    private BigDecimal total;
 
     @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
@@ -56,7 +57,7 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Long id_pedido, Cliente cliente, String referencia, Integer quantidade, String descricaoItem, UnidadeMedida unidMedida, Double valorUnitario, Double subTotal, FormaPagamento formaPagamento, Double total, StatusPedido status, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
+    public Pedido(Long id_pedido, Cliente cliente, String referencia, Integer quantidade, String descricaoItem, UnidadeMedida unidMedida, BigDecimal valorUnitario, BigDecimal subTotal, FormaPagamento formaPagamento, BigDecimal total, StatusPedido status, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
         this.id_pedido = id_pedido;
         this.cliente = cliente;
         this.referencia = referencia;
@@ -133,19 +134,19 @@ public class Pedido {
         this.unidMedida = unidMedida;
     }
 
-    public Double getValorUnitario() {
+    public BigDecimal getValorUnitario() {
         return valorUnitario;
     }
 
-    public void setValorUnitario(Double valorUnitario) {
+    public void setValorUnitario(BigDecimal valorUnitario) {
         this.valorUnitario = valorUnitario;
     }
 
-    public Double getSubTotal() {
+    public BigDecimal getSubTotal() {
         return subTotal;
     }
 
-    public void setSubTotal(Double subTotal) {
+    public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
     }
 
@@ -157,11 +158,11 @@ public class Pedido {
         this.formaPagamento = formaPagamento;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
