@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: content">
+<head>
+    <title>Pedidos - Gestão de Estoque</title>
+</head>
+<body>
+<h1>Pedidos</h1>
+<a th:href="@{/pedido/novo}">Adicionar Novo Pedido</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Referência</th>
+        <th>Quantidade</th>
+        <th>Status</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pedido : ${pedidos}">
+        <td th:text="${pedido.id_pedido}"></td>
+        <td th:text="${pedido.cliente.nome}"></td>
+        <td th:text="${pedido.referencia}"></td>
+        <td th:text="${pedido.quantidade}"></td>
+        <td th:text="${pedido.status}"></td>
+        <td>
+            <a th:href="@{/pedido/editar/{id}(id=${pedido.id_pedido})}">Editar</a>
+            <a th:href="@{/pedido/excluir/{id}(id=${pedido.id_pedido})}">Excluir</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

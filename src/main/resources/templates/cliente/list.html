@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: content">
+<head>
+    <title>Clientes - Gestão de Estoque</title>
+</head>
+<body>
+<h1>Clientes</h1>
+<a th:href="@{/cliente/novo}">Adicionar Novo Cliente</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cliente : ${clientes}">
+        <td th:text="${cliente.id_cliente}"></td>
+        <td th:text="${cliente.nome}"></td>
+        <td th:text="${cliente.email}"></td>
+        <td th:text="${cliente.telefone}"></td>
+        <td>
+            <a th:href="@{/cliente/editar/{id}(id=${cliente.id_cliente})}">Editar</a>
+            <a th:href="@{/cliente/excluir/{id}(id=${cliente.id_cliente})}">Excluir</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

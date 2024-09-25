@@ -1,13 +1,17 @@
 package com.gestao_estoque.gestao_estoque.models;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Tb_Usuario")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +30,10 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private TipoPermissao tipoPermissao;
 
-    @Column(name = "criado_em", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "criado_em", updatable = false)
     private LocalDateTime criadoEm;
 
-    @Column(name = "atualizado_em", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "atualizado_em")
     private LocalDateTime atualizadoEm;
 
     public Usuario() {
@@ -101,12 +105,64 @@ public class Usuario {
         this.atualizadoEm = atualizadoEm;
     }
 
+    @PrePersist
+    protected void onCreate() {
+        this.criadoEm = LocalDateTime.now();
+        this.atualizadoEm = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.atualizadoEm = LocalDateTime.now();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(() -> tipoPermissao.name());
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Pode ajustar conforme necessário
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Pode ajustar conforme necessário
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Pode ajustar conforme necessário
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; // Pode ajustar conforme necessário
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(id_usuario, usuario.id_usuario) && Objects.equals(nome, usuario.nome) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha) && tipoPermissao == usuario.tipoPermissao && Objects.equals(criadoEm, usuario.criadoEm) && Objects.equals(atualizadoEm, usuario.atualizadoEm);
+        return Objects.equals(id_usuario, usuario.id_usuario) &&
+                Objects.equals(nome, usuario.nome) &&
+                Objects.equals(email, usuario.email) &&
+                Objects.equals(senha, usuario.senha) &&
+                tipoPermissao == usuario.tipoPermissao &&
+                Objects.equals(criadoEm, usuario.criadoEm) &&
+                Objects.equals(atualizadoEm, usuario.atualizadoEm);
     }
 
     @Override
@@ -131,3 +187,5 @@ public class Usuario {
 enum TipoPermissao {
     ADMIN, CLIENTE
 }
+
+
