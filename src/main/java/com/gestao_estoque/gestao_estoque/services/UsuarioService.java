@@ -30,12 +30,30 @@ public class UsuarioService {
     }
 
     public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
-        usuarioAtualizado.setId_usuario(id); // Supondo que você tenha um setter para o ID
-        usuarioAtualizado.setAtualizadoEm(LocalDateTime.now());
-        return usuarioRepository.save(usuarioAtualizado);
+        // Verifica se o usuário existe antes de atualizar
+        Optional<Usuario> usuarioExistenteOpt = usuarioRepository.findById(id);
+        if (usuarioExistenteOpt.isPresent()) {
+            Usuario usuarioExistente = usuarioExistenteOpt.get();
+            usuarioAtualizado.setId_usuario(usuarioExistente.getId_usuario()); // Preserva o ID existente
+            usuarioAtualizado.setAtualizadoEm(LocalDateTime.now());
+            return usuarioRepository.save(usuarioAtualizado);
+        } else {
+            throw new RuntimeException("Usuário não encontrado para o ID: " + id); // Exceção personalizada
+        }
     }
 
     public void deletarUsuario(Long id) {
-        usuarioRepository.deleteById(id);
+        // Verifica se o usuário existe antes de deletar
+        if (usuarioRepository.existsById(id)) {
+            usuarioRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Usuário não encontrado para o ID: " + id); // Exceção personalizada
+        }
+    }
+
+    // Método para buscar usuário por email
+    public Optional<Usuario> buscarUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmail(email);
     }
 }
+
