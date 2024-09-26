@@ -35,8 +35,7 @@ public class Cliente {
     private String telefone;
 
     @Column(nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
-    private TipoCliente tipo;
+    private String tipo;
 
     @Column(length = 14, unique = true)
     private String cpf;
@@ -59,10 +58,7 @@ public class Cliente {
     @Column(name = "atualizado_em", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime atualizadoEm;
 
-    public Cliente() {
-    }
-
-    public Cliente(Long id_cliente, String nome, String email, String endereco, String cep, String cidade, String uf, String telefone, TipoCliente tipo, String cpf, String cnpj, String nomeFantasia, String razaoSocial, String inscricaoEstadual, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
+    public Cliente(Long id_cliente, String nome, String email, String endereco, String cep, String cidade, String uf, String telefone, String tipo, String cpf, String cnpj, String nomeFantasia, String razaoSocial, String inscricaoEstadual, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
         this.id_cliente = id_cliente;
         this.nome = nome;
         this.email = email;
@@ -145,11 +141,11 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    public TipoCliente getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(TipoCliente tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
@@ -208,43 +204,4 @@ public class Cliente {
     public void setAtualizadoEm(LocalDateTime atualizadoEm) {
         this.atualizadoEm = atualizadoEm;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cliente cliente = (Cliente) o;
-        return Objects.equals(id_cliente, cliente.id_cliente) && Objects.equals(nome, cliente.nome) && Objects.equals(email, cliente.email) && Objects.equals(endereco, cliente.endereco) && Objects.equals(cep, cliente.cep) && Objects.equals(cidade, cliente.cidade) && Objects.equals(uf, cliente.uf) && Objects.equals(telefone, cliente.telefone) && tipo == cliente.tipo && Objects.equals(cpf, cliente.cpf) && Objects.equals(cnpj, cliente.cnpj) && Objects.equals(nomeFantasia, cliente.nomeFantasia) && Objects.equals(razaoSocial, cliente.razaoSocial) && Objects.equals(inscricaoEstadual, cliente.inscricaoEstadual) && Objects.equals(criadoEm, cliente.criadoEm) && Objects.equals(atualizadoEm, cliente.atualizadoEm);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id_cliente, nome, email, endereco, cep, cidade, uf, telefone, tipo, cpf, cnpj, nomeFantasia, razaoSocial, inscricaoEstadual, criadoEm, atualizadoEm);
-    }
-
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "id_cliente=" + id_cliente +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", cep='" + cep + '\'' +
-                ", cidade='" + cidade + '\'' +
-                ", uf='" + uf + '\'' +
-                ", telefone='" + telefone + '\'' +
-                ", tipo=" + tipo +
-                ", cpf='" + cpf + '\'' +
-                ", cnpj='" + cnpj + '\'' +
-                ", nomeFantasia='" + nomeFantasia + '\'' +
-                ", razaoSocial='" + razaoSocial + '\'' +
-                ", inscricaoEstadual='" + inscricaoEstadual + '\'' +
-                ", criadoEm=" + criadoEm +
-                ", atualizadoEm=" + atualizadoEm +
-                '}';
-    }
-}
-
-enum TipoCliente {
-    PESSOA_FISICA, PESSOA_JURIDICA
 }

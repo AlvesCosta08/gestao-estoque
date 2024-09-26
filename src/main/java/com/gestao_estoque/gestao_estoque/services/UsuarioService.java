@@ -1,25 +1,24 @@
 package com.gestao_estoque.gestao_estoque.services;
 
-import com.gestao_estoque.gestao_estoque.models.Usuario;
-import com.gestao_estoque.gestao_estoque.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gestao_estoque.gestao_estoque.models.Usuario;
+import com.gestao_estoque.gestao_estoque.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
+    private UsuarioRepository usuarioRepository;
+
+    public Usuario criarUsuario(Usuario usuario) {
+        usuario.setCriadoEm(LocalDateTime.now());
+        return usuarioRepository.save(usuario);
     }
 
     public List<Usuario> listarUsuarios() {
@@ -30,21 +29,10 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
-    public Usuario criarUsuario(Usuario usuario) {
-        String senhaCodificada = passwordEncoder.encode(usuario.getSenha());
-        usuario.setSenha(senhaCodificada);
-        return usuarioRepository.save(usuario);
-    }
-
     public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
-        return usuarioRepository.findById(id).map(usuario -> {
-            usuario.setNome(usuarioAtualizado.getNome());
-            usuario.setEmail(usuarioAtualizado.getEmail());
-            usuario.setSenha(usuarioAtualizado.getSenha());
-            usuario.setTipoPermissao(usuarioAtualizado.getTipoPermissao());
-            usuario.setAtualizadoEm(usuarioAtualizado.getAtualizadoEm());
-            return usuarioRepository.save(usuario);
-        }).orElseThrow(() -> new RuntimeException("Usuário não encontrado com o ID: " + id));
+        usuarioAtualizado.setId_usuario(id); // Supondo que você tenha um setter para o ID
+        usuarioAtualizado.setAtualizadoEm(LocalDateTime.now());
+        return usuarioRepository.save(usuarioAtualizado);
     }
 
     public void deletarUsuario(Long id) {

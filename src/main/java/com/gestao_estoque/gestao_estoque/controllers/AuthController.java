@@ -1,21 +1,19 @@
 package com.gestao_estoque.gestao_estoque.controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-@RequestMapping
 public class AuthController {
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "login"; // Retorna o nome da visualização para a página de login
     }
 
-    @PostMapping("/login")
-    public String authenticateUser(@RequestParam String username, @RequestParam String password) {
-        // Autenticação do usuário deve ser realizada aqui
-        // (O Spring Security fará isso, então você não precisa implementar lógica adicional aqui)
-        return "redirect:/home"; // Redirecionar para home após login
+    @GetMapping("/logout")
+    public String logoutPage() {
+        return "logout"; // Retorna o nome da visualização para a página de logout
     }
 }
+

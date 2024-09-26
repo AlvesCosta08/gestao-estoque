@@ -1,56 +1,49 @@
 package com.gestao_estoque.gestao_estoque.controllers;
 
 import com.gestao_estoque.gestao_estoque.models.Usuario;
-import com.gestao_estoque.gestao_estoque.repository.UsuarioRepository;
+import com.gestao_estoque.gestao_estoque.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@Controller
-@RequestMapping("/usuarios")
+@RestController
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
-    @GetMapping("/cadastrar")
-    public String mostrarFormularioCadastro(Model model) {
-        model.addAttribute("usuario", new Usuario());
-        return "usuarios/cadastrar";
+    @PostMapping
+    public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
+        Usuario novoUsuario = usuarioService.criarUsuario(usuario);
+        return ResponseEntity.status(201).body(novoUsuario);
     }
 
-    @PostMapping("/salvar")
-    public String salvarUsuario(@ModelAttribute Usuario usuario) {
-        usuarioRepository.save(usuario);
-        return "redirect:/usuarios/listar";
+    @GetMapping
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        List<Usuario> usuarios = usuarioService.listarUsuarios();
+        return ResponseEntity.ok(usuarios);
     }
 
-    @GetMapping("/listar")
-    public String listarUsuarios(Model model) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        model.addAttribute("usuarios", usuarios);
-        return "usuarios/listar";
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Long id) {
+        Optional<Usuario> usuario = usuarioService.buscarUsuarioPorId(id);
+        return usuario.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/editar/{id}")
-    public String mostrarFormularioEdicao(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
-        model.addAttribute("usuario", usuario);
-        return "usuarios/editar";
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioAtualizado) {
+        Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
+        return ResponseEntity.ok(usuario);
     }
 
-    @PostMapping("/atualizar")
-    public String atualizarUsuario(@ModelAttribute Usuario usuario) {
-        usuarioRepository.save(usuario);
-        return "redirect:/usuarios/listar";
-    }
-
-    @GetMapping("/excluir/{id}")
-    public String excluirUsuario(@PathVariable Long id) {
-        usuarioRepository.deleteById(id);
-        return "redirect:/usuarios/listar";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
+        usuarioService.deletarUsuario(id);
+        return ResponseEntity.noContent().build();
     }
 }

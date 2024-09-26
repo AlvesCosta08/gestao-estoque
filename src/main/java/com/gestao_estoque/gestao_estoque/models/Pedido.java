@@ -28,8 +28,7 @@ public class Pedido {
     private String descricaoItem;
 
     @Column(name = "unid_medida", nullable = false, length = 10)
-    @Enumerated(EnumType.STRING)
-    private UnidadeMedida unidMedida;
+    private String unidMedida;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valorUnitario;
@@ -38,15 +37,13 @@ public class Pedido {
     private BigDecimal subTotal;
 
     @Column(name = "forma_pagamento", nullable = false, length = 50)
-    @Enumerated(EnumType.STRING)
-    private FormaPagamento formaPagamento;
+    private String formaPagamento;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
 
     @Column(nullable = false, length = 20)
-    @Enumerated(EnumType.STRING)
-    private StatusPedido status = StatusPedido.PENDENTE;
+    private String status ;
 
     @Column(name = "criado_em", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime criadoEm;
@@ -57,7 +54,7 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Long id_pedido, Cliente cliente, String referencia, Integer quantidade, String descricaoItem, UnidadeMedida unidMedida, BigDecimal valorUnitario, BigDecimal subTotal, FormaPagamento formaPagamento, BigDecimal total, StatusPedido status, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
+    public Pedido(Long id_pedido, Cliente cliente, String referencia, Integer quantidade, String descricaoItem, String unidMedida, BigDecimal valorUnitario, BigDecimal subTotal, String formaPagamento, BigDecimal total, String status, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
         this.id_pedido = id_pedido;
         this.cliente = cliente;
         this.referencia = referencia;
@@ -126,11 +123,11 @@ public class Pedido {
         this.descricaoItem = descricaoItem;
     }
 
-    public UnidadeMedida getUnidMedida() {
+    public String getUnidMedida() {
         return unidMedida;
     }
 
-    public void setUnidMedida(UnidadeMedida unidMedida) {
+    public void setUnidMedida(String unidMedida) {
         this.unidMedida = unidMedida;
     }
 
@@ -150,11 +147,11 @@ public class Pedido {
         this.subTotal = subTotal;
     }
 
-    public FormaPagamento getFormaPagamento() {
+    public String getFormaPagamento() {
         return formaPagamento;
     }
 
-    public void setFormaPagamento(FormaPagamento formaPagamento) {
+    public void setFormaPagamento(String formaPagamento) {
         this.formaPagamento = formaPagamento;
     }
 
@@ -166,11 +163,11 @@ public class Pedido {
         this.total = total;
     }
 
-    public StatusPedido getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(StatusPedido status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -210,10 +207,4 @@ public class Pedido {
     }
 }
 
-enum FormaPagamento {
-    CARTAO, DINHEIRO, TRANSFERENCIA, BOLETO
-}
 
-enum StatusPedido {
-    PENDENTE, CONCLUIDO, CANCELADO
-}
