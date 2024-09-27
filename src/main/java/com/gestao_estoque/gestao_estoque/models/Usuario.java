@@ -34,6 +34,10 @@ public class Usuario{
     @Column(name = "atualizado_em")
     private LocalDateTime atualizadoEm;
 
+    // Construtor padrão
+    public Usuario() {
+    }
+
     public Usuario(Long id_usuario, String nome, String email, String senha, String tipoPermissao, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
         this.id_usuario = id_usuario;
         this.nome = nome;
