@@ -1,0 +1,100 @@
+body {
+    background: #f4f7fa; /* Fundo claro e neutro */
+    color: #333; /* Texto escuro para melhor legibilidade */
+    font-family: 'Roboto', sans-serif; /* Fonte moderna */
+    line-height: 1.6; /* Aumento do espaçamento entre linhas para melhor leitura */
+}
+
+h1 {
+    margin-bottom: 20px; /* Espaçamento entre o título e o conteúdo */
+    color: #2c3e50; /* Título em um tom escuro */
+}
+
+.card {
+    border-radius: 15px; /* Bordas arredondadas para um visual moderno */
+    transition: transform 0.3s, box-shadow 0.3s; /* Efeitos de animação */
+    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco e semi-transparente */
+    color: #333; /* Texto escuro dentro dos cards */
+    border: 1px solid #e0e0e0; /* Borda sutil para os cartões */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Eleva o card ao passar o mouse */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Sombra mais suave ao passar o mouse */
+}
+
+.card-header {
+    border-top-left-radius: 15px; /* Bordas arredondadas na parte superior */
+    border-top-right-radius: 15px; /* Bordas arredondadas na parte superior */
+    font-weight: bold; /* Negrito no cabeçalho */
+}
+
+/* Cores para cada card com base na psicologia das cores, mas mais suaves */
+.card-header.bg-primary {
+    background-color: #6ca0d8; /* Azul suave para categorias */
+}
+
+.card-header.bg-success {
+    background-color: #77c98e; /* Verde suave para produtos */
+}
+
+.card-header.bg-warning {
+    background-color: #f4c469; /* Amarelo suave para clientes */
+}
+
+.card-header.bg-info {
+    background-color: #5bc0de; /* Azul claro para pedidos */
+}
+
+.card-header.bg-danger {
+    background-color: #e74c3c; /* Vermelho suave para usuários */
+}
+
+.btn {
+    border-radius: 25px; /* Bordas arredondadas nos botões */
+    padding: 10px 20px; /* Padding maior */
+    font-weight: bold; /* Texto em negrito */
+    transition: background-color 0.3s; /* Efeito suave ao passar o mouse */
+}
+
+.btn-outline-primary {
+    border-color: rgba(0, 123, 255, 0.5); /* Borda azul suave */
+    color: rgba(0, 123, 255, 0.8); /* Texto azul suave */
+}
+
+.btn-outline-primary:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Efeito de hover azul claro */
+}
+
+.btn-outline-success {
+    border-color: rgba(40, 167, 69, 0.5); /* Borda verde suave */
+    color: rgba(40, 167, 69, 0.8); /* Texto verde suave */
+}
+
+.btn-outline-success:hover {
+    background-color: rgba(40, 167, 69, 0.1); /* Efeito de hover verde claro */
+}
+
+.btn-outline-warning {
+    border-color: rgba(255, 193, 7, 0.5); /* Borda amarela suave */
+    color: rgba(255, 193, 7, 0.8); /* Texto amarelo suave */
+}
+
+.btn-outline-warning:hover {
+    background-color: rgba(255, 193, 7, 0.1); /* Efeito de hover amarelo claro */
+}
+
+.btn-outline-danger {
+    border-color: rgba(220, 53, 69, 0.5); /* Borda vermelha suave */
+    color: rgba(220, 53, 69, 0.8); /* Texto vermelho suave */
+}
+
+.btn-outline-danger:hover {
+    background-color: rgba(220, 53, 69, 0.1); /* Efeito de hover vermelho claro */
+}
+
+.card-body p {
+    font-size: 15px; /* Tamanho da fonte ajustado para melhor legibilidade */
+}
+
+
