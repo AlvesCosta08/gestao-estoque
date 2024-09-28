@@ -1,5 +1,6 @@
 package com.gestao_estoque.gestao_estoque.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 
 import com.gestao_estoque.gestao_estoque.models.Usuario;
 import com.gestao_estoque.gestao_estoque.util.JwtUtil;
@@ -28,16 +30,15 @@ public class AuthController {
 
     @Autowired
     private UserDetailsService userDetailsService;
-   
+
     @GetMapping("/login")
     public ModelAndView loginPage() {
-        ModelAndView modelAndView = new ModelAndView("login"); // Nome do template
+        ModelAndView modelAndView = new ModelAndView("login");
         return modelAndView;
     }
 
-    // Endpoint para realizar a autenticação do usuário
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> login(@RequestBody Usuario usuario, HttpSession session) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getSenha())
@@ -45,6 +46,9 @@ public class AuthController {
 
             final UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getEmail());
             final String token = jwtUtil.gerarToken(userDetails.getUsername());
+
+            // Armazenar o nome do usuário na sessão
+            session.setAttribute("username", userDetails.getUsername());
 
             return ResponseEntity.ok(new LoginResponse(token));
         } catch (Exception e) {
