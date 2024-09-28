@@ -3,34 +3,51 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: gestao-estoque
+    container_name: gestao-estoque  # Nome do container
     ports:
       - "8080:8080"
     depends_on:
       - db
     environment:
-      SPRING_APPLICATION_NAME: gestao-estoque
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update  # ou 'none', dependendo da sua necessidade
-      SPRING_JPA_SHOW_SQL: "true"
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres  # Configuração fixa
+      SPRING_DATASOURCE_USERNAME: postgres                       # Configuração fixa
+      SPRING_DATASOURCE_PASSWORD: postgres                       # Configuração fixa
+      SECRET_KEY: JynIc1+Fzu/x096WCM3T70paa4Kh/jQ6XfKvTlDa4dM=  # Configuração fixa
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update                     # Configuração fixa
+      SPRING_JPA_SHOW_SQL: true                                  # Configuração fixa
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect  # Configuração fixa
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver  # Configuração fixa
+    networks:
+      - gestao-estoque-net
+    command: ["sh", "-c", "while !</dev/tcp/db/5432; do sleep 1; done; java -jar /app/gestao-estoque.jar"]
 
   db:
-    image: postgres:latest
+    image: postgres:16
     container_name: postgres-db
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - gestao-estoque-net
 
 volumes:
   postgres_data:
+
+networks:
+  gestao-estoque-net:
+    driver: bridge
+
+
+
+
+
+
+
+
 
 

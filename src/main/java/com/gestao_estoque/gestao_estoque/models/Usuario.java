@@ -1,16 +1,11 @@
 package com.gestao_estoque.gestao_estoque.models;
 
 import java.time.LocalDateTime;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Tb_Usuario")
-public class Usuario{
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +20,7 @@ public class Usuario{
     @Column(nullable = false, length = 255)
     private String senha;
 
-    @Column(name = "tipo_permissao", nullable = false, length = 20)  
+    @Column(name = "tipo_permissao", nullable = false, length = 20)
     private String tipoPermissao;
 
     @Column(name = "criado_em", updatable = false)
@@ -38,14 +33,16 @@ public class Usuario{
     public Usuario() {
     }
 
-    public Usuario(Long id_usuario, String nome, String email, String senha, String tipoPermissao, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
-        this.id_usuario = id_usuario;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.tipoPermissao = tipoPermissao;
-        this.criadoEm = criadoEm;
-        this.atualizadoEm = atualizadoEm;
+    // Métodos para preencher as datas automaticamente
+    @PrePersist
+    protected void onCreate() {
+        this.criadoEm = LocalDateTime.now();
+        this.atualizadoEm = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.atualizadoEm = LocalDateTime.now();
     }
 
     public Long getId_usuario() {
@@ -92,18 +89,11 @@ public class Usuario{
         return criadoEm;
     }
 
-    public void setCriadoEm(LocalDateTime criadoEm) {
-        this.criadoEm = criadoEm;
-    }
-
     public LocalDateTime getAtualizadoEm() {
         return atualizadoEm;
     }
-
-    public void setAtualizadoEm(LocalDateTime atualizadoEm) {
-        this.atualizadoEm = atualizadoEm;
-    }
 }
+
 
 
 

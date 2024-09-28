@@ -20,8 +20,7 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
 
     public Usuario criarUsuario(Usuario usuario) {
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha())); // Criptografa a senha
-        usuario.setCriadoEm(LocalDateTime.now());
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
@@ -38,8 +37,7 @@ public class UsuarioService {
         Optional<Usuario> usuarioExistenteOpt = usuarioRepository.findById(id);
         if (usuarioExistenteOpt.isPresent()) {
             Usuario usuarioExistente = usuarioExistenteOpt.get();
-            usuarioAtualizado.setId_usuario(usuarioExistente.getId_usuario()); // Preserva o ID existente
-            usuarioAtualizado.setAtualizadoEm(LocalDateTime.now());
+            usuarioAtualizado.setId_usuario(usuarioExistente.getId_usuario());
             return usuarioRepository.save(usuarioAtualizado);
         } else {
             throw new RuntimeException("Usuário não encontrado para o ID: " + id); // Exceção personalizada
@@ -51,7 +49,7 @@ public class UsuarioService {
         if (usuarioRepository.existsById(id)) {
             usuarioRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Usuário não encontrado para o ID: " + id); // Exceção personalizada
+            throw new RuntimeException("Usuário não encontrado para o ID: " + id);
         }
     }
 

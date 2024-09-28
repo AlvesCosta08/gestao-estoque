@@ -20,7 +20,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_DB: gestaoestoque
         options: >-
           --health-cmd "pg_isready -U postgres"
           --health-interval 10s
@@ -28,18 +28,15 @@ jobs:
           --health-retries 5
 
     steps:
-      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up JDK 21
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      # Step 3: Cache Maven dependencies
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -48,11 +45,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 4: Grant execute permission for Maven Wrapper
-      - name: Grant execute permission for Maven Wrapper
-        run: chmod +x ./mvnw
-
-      # Step 5: Wait for PostgreSQL to be ready
       - name: Wait for PostgreSQL
         run: |
           for i in {1..30}; do
@@ -64,22 +56,17 @@ jobs:
             sleep 5
           done
 
-      # Step 6: Build the project with Maven
       - name: Build with Maven
         run: ./mvnw clean install
 
-      # Step 7: Build Docker image
+      - name: Run Tests
+        run: ./mvnw test
+
       - name: Build Docker Image
         run: docker build -t alves74/gestao-estoque:${{ github.sha }} .
 
-      # Step 8: Log in to Docker Hub
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # Step 9: Push Docker image to Docker Hub
       - name: Push Docker Image to Docker Hub
         run: docker push alves74/gestao-estoque:${{ github.sha }}
-
-      # Step 10: Run Tests (opcional, caso você queira rodar testes)
-      - name: Run Tests
-        run: ./mvnw test

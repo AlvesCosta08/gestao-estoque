@@ -9,12 +9,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder; // Importante para a criptografia
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import com.gestao_estoque.gestao_estoque.util.JwtRequestFilter;
 
 @Configuration
@@ -34,10 +33,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/home").permitAll()
                         .requestMatchers("/auth/login", "/auth/logout").permitAll()
-                        .requestMatchers("/static/**").permitAll()
-                        .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/resources/**").permitAll()
-                       // .requestMatchers("/api/usuarios").permitAll()
+                        .requestMatchers("/static/**", "/resources/**", "/public/**").permitAll()
+                        .requestMatchers("/api/usuarios").permitAll()
                         .requestMatchers("/dashboard").authenticated()
                         .anyRequest().authenticated()
                 )
@@ -48,8 +45,15 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/home?logout")
+                        .logoutSuccessUrl("/auth/login?logout")
+                        .invalidateHttpSession(true) // Invalida a sessão
+                        .deleteCookies("JSESSIONID") // Remove o cookie da sessão
                         .permitAll()
+                )
+                .sessionManagement(session -> session
+                        .invalidSessionUrl("/auth/login?sessionExpired=true")
+                        .maximumSessions(1)
+                        .expiredUrl("/auth/login?sessionExpired=true")
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -68,4 +72,11 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
 }
+
+
